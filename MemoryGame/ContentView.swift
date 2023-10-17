@@ -8,14 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var cardNumber: Int = 3
+    let icons = ["1", "2", "3"]
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            VStack {
+                CardView(isFlipped: true, icon: "x")
+                CardView(isFlipped: true, icon: "x")
+                CardView(isFlipped: true, icon: "x")
+            }
+            .padding()
+            
+            HStack {
+                adjustCardNumber(by: -1, symbol: "+")
+            }
         }
-        .padding()
+    }
+    
+    func adjustCardNumber(by offset: Int, symbol: String) -> some View {
+        return Button(
+            action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/,
+            label: {Text("Button")}
+        )
     }
 }
 
