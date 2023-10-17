@@ -10,10 +10,10 @@ struct CardView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(isFlipped ? .blue : .white)
-                RoundedRectangle(cornerRadius: 12)
                     .strokeBorder(.blue, lineWidth: 2)
+                    
                 Text(icon)
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                    .font(.largeTitle)
                     .opacity(isFlipped ? 0 : 1)
             }
         }
