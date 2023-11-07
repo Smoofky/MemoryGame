@@ -3,7 +3,11 @@ import SwiftUI
 struct ContentView: View {
     @State var theme = 1
     let off = 2
-
+    @State var emojiArrayThemeBlue = ["😈", "😈","🌂", "☂️","🌂", "☂️"]
+    @State var emojiArrayThemeRed = ["😢", "😢","😇", "😇", "🤯", "🤯","🤐", "🤐","🥹", "🥹","😂", "🤣","😂","🤣","🐱","🐱"]
+    @State var emojiArrayThemeGreen = ["🥶", "🥶","🦋","🪼","🐳","🦕","🦋","🪼","🐳","🦕"]
+    
+    
     var body: some View {
         VStack {
             Text("Memo")
@@ -21,6 +25,7 @@ struct ContentView: View {
     
     var cardDisplay: some View {
         let emojiArray = themeContents()
+        
         return LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
             ForEach (0 ..< themeContents().count
                      , id: \.self) { index in
@@ -35,27 +40,27 @@ struct ContentView: View {
     }
     
     func themeButtonsViews() -> some View {
-        HStack {
-            ThemeButtonView(number: 1, image: "heart" , theme: $theme)
+        @State var emojiArray = themeContents()
+        return HStack {
+            ThemeButtonView(number: 1, image: "heart" , theme: $theme, emojiArray: $emojiArrayThemeRed)
             Spacer()
-            ThemeButtonView(number: 2, image: "heart", theme: $theme)
+            ThemeButtonView(number: 2, image: "heart", theme: $theme,emojiArray: $emojiArrayThemeBlue)
             Spacer()
-            ThemeButtonView(number: 3, image: "doc", theme: $theme)
+            ThemeButtonView(number: 3, image: "doc", theme: $theme,emojiArray: $emojiArrayThemeGreen)
         }
     }
     
     func themeContents() -> (Array<String>) {
-        var emojiArray: [String] = []
+
         if theme == 1 {
-            emojiArray = ["😈", "😈","🌂", "☂️","🌂", "☂️"]
+            return emojiArrayThemeBlue.shuffled()
         }   else if theme == 2 {
-            emojiArray = ["😢", "😢","😇", "😇", "🤯", "🤯","🤐", "🤐","🥹", "🥹","😂", "🤣","😂", "🤣","🐱","🐱"]
+            return emojiArrayThemeRed.shuffled()
         }   else {
-            emojiArray = ["🥶", "🥶","🦋","🪼","🐳","🦕","🦋","🪼","🐳","🦕"]
+            return emojiArrayThemeGreen.shuffled()
         }
-        emojiArray.shuffle()
-        return emojiArray
     }
+
 }
 
 #Preview {
