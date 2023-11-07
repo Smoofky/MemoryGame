@@ -1,62 +1,62 @@
-//
-//  ContentView.swift
-//  MemoryGame
-//
-//  Created by student on 17/10/2023.
-//
-
 import SwiftUI
 
 struct ContentView: View {
-    @State var cardNumber: Int = 6
-    @State var disabled : Bool = false
-    let columns = [GridItem(.adaptive(minimum: 120)), GridItem(.flexible())]
-    let icons = ["👁️","🧠", "🦷" ,"☠️" ,"🥶","😭","👁️","🧠", "🦷" ,"☠️" ,"🥶","😭"]
-    var cardAdd : some View {
-        adjustCardNumber(by: 2, symbol: "+") .disabled(cardNumber >= icons.count)
-    }
-    var cardRemove : some View {
-        adjustCardNumber(by: -2, symbol: "-").disabled(cardNumber <= 2)
-    }
-    var cardDisplay : some View {
-        LazyVGrid(columns: columns) {
-            ForEach(0..<cardNumber, id: \.self){ index in CardView(isFlipped: true, icon: icons[index])}
-        } .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-        
-    }
-    func adjustCardNumber(by offset: Int, symbol: String) -> some View {
-        
-        Button(
-            action : {
-                
-                    cardNumber += offset
-                
-            } ,
-            label: {
-                ZStack{
-                    RoundedRectangle(cornerRadius: 25) .fill(.white) .strokeBorder(.blue, lineWidth: 2) .frame(width: 50, height: 50)
-                    Text(symbol).font(.largeTitle)
-                }
-                
-            }) //.disabled(cardNumber <= 2 || cardNumber > icons.count)
-    }
-    
+    @State var theme = 1
+    let off = 2
+
     var body: some View {
         VStack {
-            ScrollView{
+            Text("Memo")
+                .font(.largeTitle)
+                .multilineTextAlignment(.center)
+            
+            ScrollView {
                 cardDisplay
             }
-            
-            Spacer()
-            HStack
-            {
-                cardAdd
-                Spacer()
-                cardRemove
-                
+            themeButtons
+        }
+        .foregroundColor(theme == 1 ? .blue : (theme == 2 ? .red : .green))
+        .padding()
+    }
+    
+    var cardDisplay: some View {
+        let emojiArray = themeContents()
+        return LazyVGrid(columns: [GridItem(.adaptive(minimum: 80))]) {
+            ForEach (0 ..< themeContents().count
+                     , id: \.self) { index in
+                CardView(isFlipped: true, icon: emojiArray[index])
+                    .aspectRatio(2/3, contentMode: .fit)
             }
         }
-    }}
+    }
+    
+    var themeButtons: some View {
+        return themeButtonsViews()
+    }
+    
+    func themeButtonsViews() -> some View {
+        HStack {
+            ThemeButtonView(number: 1, image: "heart" , theme: $theme)
+            Spacer()
+            ThemeButtonView(number: 2, image: "heart", theme: $theme)
+            Spacer()
+            ThemeButtonView(number: 3, image: "doc", theme: $theme)
+        }
+    }
+    
+    func themeContents() -> (Array<String>) {
+        var emojiArray: [String] = []
+        if theme == 1 {
+            emojiArray = ["😈", "😈","🌂", "☂️","🌂", "☂️"]
+        }   else if theme == 2 {
+            emojiArray = ["😢", "😢","😇", "😇", "🤯", "🤯","🤐", "🤐","🥹", "🥹","😂", "🤣","😂", "🤣","🐱","🐱"]
+        }   else {
+            emojiArray = ["🥶", "🥶","🦋","🪼","🐳","🦕","🦋","🪼","🐳","🦕"]
+        }
+        emojiArray.shuffle()
+        return emojiArray
+    }
+}
 
 #Preview {
     ContentView()
